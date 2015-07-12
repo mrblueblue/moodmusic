@@ -5,6 +5,8 @@ var config = require('./config');
 
 var app = express();
 var port = process.env.PORT || 3000;
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 app.use(express.static('public'));
 
@@ -28,7 +30,13 @@ TwitterAPI.stream('statuses/filter', SF, function(stream){
     var analysis = sentiment(data.text);
     var score = analysis.score;
     var comparative = analysis.comparative;
+
     console.log(score, comparative);
+
+    io.emit('tweet', {
+      score: analysis.score,
+      comparative: analysis.comparative
+    })
   });
 
   stream.on('error', function(error){
@@ -37,7 +45,7 @@ TwitterAPI.stream('statuses/filter', SF, function(stream){
   });
 });
 
-var server = app.listen(port, function () {
+server.listen(port, function(){
   var host = server.address().address;
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('app listening at http://%s:%s', host, port);
 });
