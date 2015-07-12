@@ -1,3 +1,5 @@
+var socket = io('http://localhost:3000');
+
 $(document).ready(function() {
 
   //======================================//
@@ -44,7 +46,7 @@ $(document).ready(function() {
     chordProgression.push(happyOrSad[chord]);
 
     //Keep it at a consistent 4 chord progression
-    if (chordProgression.length > 4){
+    if (chordProgression.length > 8){
       chordProgression.shift();
     }
 
@@ -77,30 +79,23 @@ $(document).ready(function() {
   var counter = 0;
   var progressionInProgress = false;
 
-  //Every time a user types a key, check the sentiment of the message and generate the appropriate
-  //color and music.
-  $('.tunes').keyup(function(e){
-
-    var key = e.which;
-    var sentimentScore = analyzeSentiment($('.tunes').val()).score;
-
+  socket.on('tweet', function(data){
+    var sentimentScore = data.score;
     updateColor(sentimentScore);
 
     if (counter >= 5){
       generateChord(sentimentScore);
     }
+   
+    if (counter < 5){
+      var note = happyChords.cMaj[counter];
+      counter++;
+      play(findFrequency(note));
 
-    //If the key pressed is a letter, play a note! If not, don't.
-    if ((key <= 123 && key >= 96) || (key <= 90 && key >= 65)){
-      if (counter < 5){
-        var note = happyChords.cMaj[counter];
-        counter++;
-        play(findFrequency(note));
-      } else if (!progressionInProgress){
-        progressionInProgress = true;
-        updateChord();
-      }
+    } else if (!progressionInProgress){
+      progressionInProgress = true;
+      updateChord();
     }
+    
   });
-
 });
