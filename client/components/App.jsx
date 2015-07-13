@@ -39,7 +39,7 @@ class App extends React.Component {
   render(){
     let { backgroundColor } = this.state;
     return (
-      <div style={{backgroundColor: backgroundColor}}>
+      <div className='app' style={{backgroundColor: backgroundColor}}>
         <div id="logo">
           <img src="./assets/moodmusicBW.png" />
         </div>
