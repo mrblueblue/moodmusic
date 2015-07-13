@@ -1,5 +1,5 @@
 # Mood Music
-###Turn your mood into music.
+###Turning the Twitter stream into music.
 
 Mood Music uses the excellent [Sentiment Library](https://github.com/thisandagain/sentiment) by Anrew Sliwinski and the Web Audio API to generate music and color based on the Twitter stream.
 
