@@ -22,6 +22,24 @@ Go to `127.0.0.1:3000` in your browser to see the app in action!
 
 The main React component is `App.jsx`. Instead of using mixins, the component is wrapped in a higher-order component that passes down the HTML5 Audio context and methods. This is done in the `createAudioContext` function.
 
-### io.js Client
+### io.js Server
 
 Server code is written in ES6 and is run by io.js. Mainly, I just wanted to use destructuring :smiley:.
+
+### App Structure
+
+```bash
+
+├── app.js                         # Express server
+├── server.js                      # Server entry point file
+├── public/                        # Static files to be served
+└── client/                        # Application source
+    ├── index.js                   # Client entry point    
+    ├── components/                # React components folder
+    │   └── App.jsx                # Main React component
+    ├── utils/                     # Utility funcitons
+    │   └── createAudioContext.js  # Wraps component in AudioContext component
+    └── config/                    # Configuration files
+        ├── colors.js              # Configs for colors
+        └── music.js               # Configs for notes, frequencies, etc.
+```
