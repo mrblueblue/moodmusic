@@ -1,51 +1,50 @@
-var express = require('express');
-var sentiment = require('sentiment');
-var Twitter = require('Twitter');
-var config = require('./config');
+import express from 'express';
+import sentiment from 'sentiment';
+import Twitter from 'Twitter';
+import config from './config';
 
-var app = express();
-var port = process.env.PORT || 3000;
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const app = express();
+const port = process.env.PORT || 3000;
+const server = from ('http').createServer(app);
+const io = from ('socket.io')(server);
 
 app.use(express.static('public'));
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send('index.html');
 });
 
 /**** Twitter Stream ****/
-
-var TwitterAPI = new Twitter({
+const TwitterAPI = new Twitter({
   consumer_key: config.TWITTER_CONSUMER_KEY,
   consumer_secret: config.TWITTER_CONSUMER_SECRET,
   access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
   access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var SF = { locations: '-122.75,36.8, -121.75,37.8' };
+TwitterAPI.stream('statuses/filter', {
+  /**** San Francisco coordinates ****/
+  locations: '-122.75,36.8, -121.75,37.8' 
+}, (stream) => {
 
-TwitterAPI.stream('statuses/filter', SF, function(stream){
-  stream.on('data', function(data){
-    var analysis = sentiment(data.text);
-    var score = analysis.score;
-    var comparative = analysis.comparative;
-
+  stream.on('data', (data) => {
+    let analysis = sentiment(data.text);
+    let { score, comparative } = analysis;
     console.log(score, comparative);
 
     io.emit('tweet', {
-      score: analysis.score,
-      comparative: analysis.comparative
-    })
+      score: score,
+      comparative: comparative
+    });
   });
 
-  stream.on('error', function(error){
-    console.log(error)
+  stream.on('error', (error) => {
+    console.log(error);
     throw error;
   });
 });
 
-server.listen(port, function(){
+server.listen(port, () => {
   var host = server.address().address;
   console.log('app listening at http://%s:%s', host, port);
 });
