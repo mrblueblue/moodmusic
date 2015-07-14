@@ -12,7 +12,8 @@ After having set up your API keys, you can grab the needed dependencies:
     npm install
 
 And then serve the application:
-
+    
+    nvm use iojs
     node app.js
   
 Go to `127.0.0.1:3000` in your browser to see the app in action!
@@ -23,4 +24,4 @@ The main React component is `App.jsx`. Instead of using mixins, the component is
 
 ### io.js Client
 
-Server code is written in ES6 and is run by io.js. Mainly, I just wanted to use destructuring :happy:.
+Server code is written in ES6 and is run by io.js. Mainly, I just wanted to use destructuring :smiley:.
