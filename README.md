@@ -17,3 +17,10 @@ And then serve the application:
   
 Go to `127.0.0.1:3000` in your browser to see the app in action!
 
+### React Client
+
+The main React component is `App.jsx`. Instead of using mixins, the component is wrapped in a higher-order component that passes down the HTML5 Audio context and methods. This is done in the `createAudioContext` function.
+
+### io.js Client
+
+Server code is written in ES6 and is run by io.js. Mainly, I just wanted to use destructuring :happy:.
